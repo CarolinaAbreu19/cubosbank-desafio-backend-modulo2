@@ -98,7 +98,23 @@ const atualizarUsuario = async (req, res) => {
 }
 
 const excluirConta = async (req, res) => {
+    const { numeroConta } = req.params;
 
+    if(parseInt(numeroConta) % 1 !== 0) {
+        return res.status(400).json({ mensagem: "Id inválido" });
+    }
+
+    const contaEncontrada = database.contas.find(conta => conta.id === numeroConta);
+    if(!contaEncontrada) {
+        return res.status(400).json({ mensagem: "Não existe conta associada ao id passado como parâmetro da requisição" });
+    }
+
+    if(contaEncontrada.saldo !== 0) {
+        return res.status(400).json({ mensagem: "Não é possível excluir contas com saldo diferente de zero" });
+    }
+
+    database.contas.splice(database.contas.indexOf(contaEncontrada),1);
+    return res.status(200).json({ mensagem: "Conta excluída com sucesso!" });
 }
 
 module.exports = {
