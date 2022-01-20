@@ -97,8 +97,13 @@ const atualizarUsuario = async (req, res) => {
     return res.status(200).json(contaEncontrada);
 }
 
+const excluirConta = async (req, res) => {
+
+}
+
 module.exports = {
     listarContas,
     criarConta,
-    atualizarUsuario
+    atualizarUsuario,
+    excluirConta
 }
