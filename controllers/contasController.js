@@ -51,7 +51,12 @@ const criarConta = async (req, res) => {
 
 }
 
+const atualizarUsuario = async (req, res) => {
+
+}
+
 module.exports = {
     listarContas,
-    criarConta
+    criarConta,
+    atualizarUsuario
 }
