@@ -1,4 +1,5 @@
 const database = require('../bancodedados');
+const { format } = require('date-fns');
 
 const depositar = async (req, res) => {
     const { numero_conta, valor } = req.body;
@@ -21,7 +22,12 @@ const depositar = async (req, res) => {
     }
 
     contaEncontrada.saldo += valor;
-    return res.status(200).json({ mensagem: "Depósito efetuado com sucesso!" });
+    const transacaoEfetuada = {
+        data: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
+        numero_conta: numero_conta.toString(),
+        valor: valor
+    }
+    return res.status(200).json(transacaoEfetuada);
 }
 
 module.exports = {
