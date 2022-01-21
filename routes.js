@@ -9,4 +9,6 @@ routes.post('/contas', contas.criarConta);
 routes.put('/contas/:numeroConta/usuario', contas.atualizarUsuario);
 routes.delete('/contas/:numeroConta', contas.excluirConta);
 
+routes.post('/transacoes/depositar', transacoes.depositar);
+
 module.exports = routes;
