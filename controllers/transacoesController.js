@@ -27,6 +27,7 @@ const depositar = async (req, res) => {
         numero_conta: numero_conta.toString(),
         valor: valor
     }
+    database.depositos.push(transacaoEfetuada);
     return res.status(200).json(transacaoEfetuada);
 }
 
