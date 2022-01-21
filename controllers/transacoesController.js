@@ -77,7 +77,12 @@ const transferir = async (req, res) => {
     return res.status(200).json(transacaoEfetuada);
 }
 
+const sacar = async (req, res) => {
+
+}
+
 module.exports = {
     depositar,
-    transferir
+    transferir,
+    sacar
 }
