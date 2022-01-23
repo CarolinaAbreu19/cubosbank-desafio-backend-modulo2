@@ -117,9 +117,33 @@ const excluirConta = async (req, res) => {
     return res.status(200).json({ mensagem: "Conta excluída com sucesso!" });
 }
 
+const saldo = async (req, res) => {
+    const { numero_conta, senha } = req.query;
+
+    if(!numero_conta || !senha) {
+        return res.status(400).json({ mensagem: "Número da conta e senha devem ser passados no endereço da requisição como queries" });
+    }
+
+    if(numero_conta % 1 !== 0) {
+        return res.status(400).json({ mensagem: "Número de conta inválido" });
+    }
+
+    const contaEncontrada = database.contas.find(conta => conta.id === numero_conta.toString().trim());
+    if(!contaEncontrada) {
+        return res.status(404).json({ mensagem: "Não existe conta associada ao id passado como parâmetro da requisição" });
+    }
+
+    if(contaEncontrada.usuario.senha !== senha.toString().trim()) {
+        return res.status(401).json({ mensagem: "Senha incorreta" });
+    }
+
+    return res.status(200).json({ saldo: contaEncontrada.saldo });
+}
+
 module.exports = {
     listarContas,
     criarConta,
     atualizarUsuario,
-    excluirConta
-}
+    excluirConta,
+    saldo
+} 
