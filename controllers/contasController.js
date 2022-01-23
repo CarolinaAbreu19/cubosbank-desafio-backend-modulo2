@@ -141,7 +141,57 @@ const saldo = async (req, res) => {
 }
 
 const extrato = async (req, res) => {
+    const { numero_conta, senha } = req.query;
 
+    if(!numero_conta || !senha) {
+        return res.status(400).json({ mensagem: "Número da conta e senha devem ser passados no endereço da requisição como queries" });
+    }
+
+    if(numero_conta % 1 !== 0) {
+        return res.status(400).json({ mensagem: "Número de conta inválido" });
+    }
+
+    const contaEncontrada = database.contas.find(conta => conta.id === numero_conta.toString().trim());
+    if(!contaEncontrada) {
+        return res.status(404).json({ mensagem: "Não existe conta associada ao id passado como parâmetro da requisição" });
+    }
+
+    if(contaEncontrada.usuario.senha !== senha.toString().trim()) {
+        return res.status(401).json({ mensagem: "Senha incorreta" });
+    }
+
+    const depositos = [];
+    const saques = [];
+    const transferenciasRecebidas = [];
+    const transferenciasEnviadas = [];
+    database.depositos.forEach(deposito => {
+        if(deposito.numero_conta === numero_conta.toString().trim()) {
+            depositos.push(deposito);
+        }
+    });
+    database.saques.forEach(saque => {
+        if(saque.numero_conta === numero_conta.toString().trim()) {
+            saques.push(saque);
+        }
+    });
+    database.transferencias.forEach(transferencia => {
+        if(transferencia.numero_conta_origem === numero_conta.toString().trim()) {
+            transferenciasEnviadas.push(transferencia);
+        }
+    });
+    database.transferencias.forEach(transferencia => {
+        if(transferencia.numero_conta_destino === numero_conta.toString().trim()) {
+            transferenciasRecebidas.push(transferencia)
+        }
+    });
+    
+    return res.status(200).json({
+        depositos: depositos,
+        saques: saques,
+        transferenciasEnviadas: transferenciasEnviadas,
+        transferenciasRecebidas: transferenciasRecebidas
+    });
+    
 }
 
 module.exports = {
