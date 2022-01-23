@@ -78,7 +78,31 @@ const transferir = async (req, res) => {
 }
 
 const sacar = async (req, res) => {
+    const { numero_conta, valor, senha } = req.body;
 
+    if(!numero_conta || !valor || !senha) {
+        return res.status(400).json({ mensagem: "Todos os campos são obrigatórios" });
+    }
+
+    if(numero_conta % 1 !== 0) {
+        return res.status(400).json({ mensagem: "Número de conta inválido" });
+    }
+
+    const contaEncontrada = database.contas.find(conta => conta.id === numero_conta.toString().trim());
+    if(!contaEncontrada) {
+        return res.status(404).json({ mensagem: "Não foi possível encontrar a conta associada a este id" });
+    }
+
+    if(contaEncontrada.usuario.senha !== senha) {
+        return res.status(401).json({ mensagem: "Senha incorreta" });
+    }
+
+    if(contaEncontrada.saldo < valor) {
+        return res.status(400).json({ mensagem: "Saldo insuficiente" });
+    }
+
+    contaEncontrada.saldo -= valor;
+    return res.status(200).json({ mensagem: "Saque realizado com sucesso!" });
 }
 
 module.exports = {
