@@ -14,7 +14,10 @@ module.exports = {
     depositos: [
         // array de depósitos
     ],
-    transferencias: [
-        // array de transferências
+    transferenciasEnviadas: [
+        // array de transferências enviadas
+    ],
+    transferenciasRecebidas: [
+        // array de transferências recebidas
     ],
 }
