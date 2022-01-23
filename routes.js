@@ -9,6 +9,7 @@ routes.post('/contas', contas.criarConta);
 routes.put('/contas/:numeroConta/usuario', contas.atualizarUsuario);
 routes.delete('/contas/:numeroConta', contas.excluirConta);
 routes.get('/contas/saldo', contas.saldo);
+routes.get('/contas/extrato', contas.extrato);
 
 routes.post('/transacoes/depositar', transacoes.depositar);
 routes.post('/transacoes/transferir', transacoes.transferir);

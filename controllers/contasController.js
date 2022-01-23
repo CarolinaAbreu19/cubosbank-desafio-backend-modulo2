@@ -140,10 +140,15 @@ const saldo = async (req, res) => {
     return res.status(200).json({ saldo: contaEncontrada.saldo });
 }
 
+const extrato = async (req, res) => {
+
+}
+
 module.exports = {
     listarContas,
     criarConta,
     atualizarUsuario,
     excluirConta,
-    saldo
+    saldo,
+    extrato
 } 
