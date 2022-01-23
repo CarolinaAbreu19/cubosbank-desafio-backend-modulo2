@@ -16,7 +16,7 @@ const depositar = async (req, res) => {
         return res.status(400).json({ mensagem: "Valor para depósito inválido" });
     }
 
-    const contaEncontrada = database.contas.find(conta => conta.id === numero_conta.toString());
+    const contaEncontrada = database.contas.find(conta => conta.id === numero_conta.toString().trim());
     if(!contaEncontrada) {
         return res.status(404).json({ mensagem: "Não existe conta associada ao id passado como corpo da requisição" });
     }
@@ -50,8 +50,8 @@ const transferir = async (req, res) => {
         return res.status(400).json({ mensagem: "Não é possível efetuar uma transferência para a própria conta" });
     }
 
-    const contaOrigemEncontrada = database.contas.find(conta => conta.id === numero_conta_origem.toString());
-    const contaDestinoEncontrada = database.contas.find(conta => conta.id === numero_conta_destino.toString());
+    const contaOrigemEncontrada = database.contas.find(conta => conta.id === numero_conta_origem.toString().trim());
+    const contaDestinoEncontrada = database.contas.find(conta => conta.id === numero_conta_destino.toString().trim());
 
     if(!contaOrigemEncontrada) {
         return res.status(404).json({ mensagem: "Não foi possível encontrar a conta de origem associada a este id" });

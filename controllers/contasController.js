@@ -61,7 +61,7 @@ const atualizarUsuario = async (req, res) => {
         return res.status(400).json({ mensagem: "Id inválido" });
     }
 
-    const contaEncontrada = database.contas.find(conta => conta.id === numeroConta);
+    const contaEncontrada = database.contas.find(conta => conta.id === numeroConta.toString().trim());
     if(!contaEncontrada) {
         return res.status(400).json({ mensagem: "Não existe conta associada ao id passado como parâmetro da requisição" });
     }
@@ -104,7 +104,7 @@ const excluirConta = async (req, res) => {
         return res.status(400).json({ mensagem: "Id inválido" });
     }
 
-    const contaEncontrada = database.contas.find(conta => conta.id === numeroConta);
+    const contaEncontrada = database.contas.find(conta => conta.id === numeroConta.toString().trim());
     if(!contaEncontrada) {
         return res.status(400).json({ mensagem: "Não existe conta associada ao id passado como parâmetro da requisição" });
     }
