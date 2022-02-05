@@ -53,8 +53,8 @@ const atualizarUsuario = async (req, res) => {
     const { nome, cpf, data_nascimento, telefone, email, senha } = req.body;
     const { numeroConta } = req.params;
 
-    if(!nome && !cpf && !data_nascimento && !telefone && !email && !senha) {
-        return res.status(400).json({ mensagem: "É preciso passar pelo menos um campo no body da requisição" });
+    if(!nome || !cpf || !data_nascimento || !telefone || !email || !senha) {
+        return res.status(400).json({ mensagem: "Todos os campos são obrigatórios" })
     }
 
     if(parseInt(numeroConta) % 1 !== 0) {
@@ -74,25 +74,14 @@ const atualizarUsuario = async (req, res) => {
     if(emailExistente) {
         return res.status(400).json({ mensagem: "Este email já está associado a uma conta" });
     }
-
-    if(nome) {
-        contaEncontrada.usuario.nome = nome;
-    }
-    if(cpf) {
-        contaEncontrada.usuario.cpf = cpf;
-    }
-    if(data_nascimento) {
-        contaEncontrada.usuario.data_nascimento = data_nascimento;
-    }
-    if(telefone) {
-        contaEncontrada.usuario.telefone = telefone;
-    }
-    if(email) {
-        contaEncontrada.usuario.email = email;
-    }
-    if(senha) {
-        contaEncontrada.usuario.senha = senha;
-    }
+       
+    contaEncontrada.usuario.nome = nome;
+    contaEncontrada.usuario.cpf = cpf;
+    contaEncontrada.usuario.data_nascimento = data_nascimento;
+    contaEncontrada.usuario.telefone = telefone;
+    contaEncontrada.usuario.email = email;
+    contaEncontrada.usuario.senha = senha;
+    
 
     return res.status(200).json(contaEncontrada);
 }
