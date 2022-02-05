@@ -66,6 +66,8 @@ const atualizarUsuario = async (req, res) => {
         return res.status(400).json({ mensagem: "Não existe conta associada ao id passado como parâmetro da requisição" });
     }
 
+    const user = contaEncontrada.usuario;
+
     const cpfExistente = database.contas.find(conta => conta.usuario.cpf === cpf);
     if(cpfExistente) {
         return res.status(400).json({ mensagem: "Este CPF já está associado a uma conta" });
@@ -74,14 +76,13 @@ const atualizarUsuario = async (req, res) => {
     if(emailExistente) {
         return res.status(400).json({ mensagem: "Este email já está associado a uma conta" });
     }
-       
-    contaEncontrada.usuario.nome = nome;
-    contaEncontrada.usuario.cpf = cpf;
-    contaEncontrada.usuario.data_nascimento = data_nascimento;
-    contaEncontrada.usuario.telefone = telefone;
-    contaEncontrada.usuario.email = email;
-    contaEncontrada.usuario.senha = senha;
-    
+
+    user.nome = nome;
+    user.cpf = cpf;
+    user.data_nascimento = data_nascimento;
+    user.telefone = telefone;
+    user.email = email;
+    user.senha = senha;
 
     return res.status(200).json(contaEncontrada);
 }
