@@ -53,8 +53,8 @@ const atualizarUsuario = async (req, res) => {
     const { nome, cpf, data_nascimento, telefone, email, senha } = req.body;
     const { numeroConta } = req.params;
 
-    if(!nome && !cpf && !data_nascimento && !telefone && !email && !senha) {
-        return res.status(400).json({ mensagem: "É preciso passar pelo menos um campo no body da requisição" });
+    if(!nome || !cpf || !data_nascimento || !telefone || !email || !senha) {
+        return res.status(400).json({ mensagem: "Todos os campos são obrigatórios" })
     }
 
     if(parseInt(numeroConta) % 1 !== 0) {
@@ -66,6 +66,8 @@ const atualizarUsuario = async (req, res) => {
         return res.status(400).json({ mensagem: "Não existe conta associada ao id passado como parâmetro da requisição" });
     }
 
+    const user = contaEncontrada.usuario;
+
     const cpfExistente = database.contas.find(conta => conta.usuario.cpf === cpf);
     if(cpfExistente) {
         return res.status(400).json({ mensagem: "Este CPF já está associado a uma conta" });
@@ -75,24 +77,12 @@ const atualizarUsuario = async (req, res) => {
         return res.status(400).json({ mensagem: "Este email já está associado a uma conta" });
     }
 
-    if(nome) {
-        contaEncontrada.usuario.nome = nome;
-    }
-    if(cpf) {
-        contaEncontrada.usuario.cpf = cpf;
-    }
-    if(data_nascimento) {
-        contaEncontrada.usuario.data_nascimento = data_nascimento;
-    }
-    if(telefone) {
-        contaEncontrada.usuario.telefone = telefone;
-    }
-    if(email) {
-        contaEncontrada.usuario.email = email;
-    }
-    if(senha) {
-        contaEncontrada.usuario.senha = senha;
-    }
+    user.nome = nome;
+    user.cpf = cpf;
+    user.data_nascimento = data_nascimento;
+    user.telefone = telefone;
+    user.email = email;
+    user.senha = senha;
 
     return res.status(200).json(contaEncontrada);
 }
